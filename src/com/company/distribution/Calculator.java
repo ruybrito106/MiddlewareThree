@@ -15,7 +15,7 @@ public class Calculator {
     }
 
     public float Sub() {
-        return fstOperand + sndOperand;
+        return fstOperand - sndOperand;
     }
 
     public float Mul() {

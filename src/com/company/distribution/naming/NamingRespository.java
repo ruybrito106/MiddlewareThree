@@ -8,10 +8,8 @@ public class NamingRespository {
 
     private ArrayList<NamingRecord> namingRecord = new ArrayList<NamingRecord>();
 
-    public NamingRespository() {}
-
-    public NamingRespository(ArrayList<NamingRecord> namingRecord) {
-        this.namingRecord = namingRecord;
+    public NamingRespository() {
+        this.namingRecord = new ArrayList<NamingRecord>();
     }
 
     public ArrayList<NamingRecord> getNamingRecord() {
@@ -23,13 +21,13 @@ public class NamingRespository {
     }
 
     public void addService(String serviceName, ClientProxy proxy) {
-        namingRecord.add(new NamingRecord(serviceName, proxy));
+        this.namingRecord.add(new NamingRecord(serviceName, proxy));
     }
 
     public ClientProxy getService(String serviceName) {
         for (int i = 0; i < namingRecord.size(); i++) {
-            if (namingRecord.get(i).getServiceName() == serviceName) {
-                return namingRecord.get(i).getClientProxy();
+            if (namingRecord.get(i).getServiceName().equals(serviceName)) {
+                return (ClientProxy) namingRecord.get(i).getClientProxy();
             }
         }
         return null;

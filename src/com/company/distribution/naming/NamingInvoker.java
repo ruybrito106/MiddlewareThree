@@ -9,8 +9,7 @@ import java.util.ArrayList;
 
 public class NamingInvoker {
 
-    private NamingRespository repository = new NamingRespository();
-    private Naming naming = new Naming(repository);
+    private Naming naming = new Naming();
 
     public void invoke(NamingProxy client) throws Throwable {
 
@@ -29,11 +28,16 @@ public class NamingInvoker {
             requestMessage = server.receive();
             Message request = marshaller.unmarshall(requestMessage);
 
-            Object result = null;
-            int status = 200;
+            ClientProxy result = null;
+            String name;
+            ArrayList<String> dict;
+
+            int status = 500;
 
             String operation = request.getBody().getRequestHeader().getOperation();
             ArrayList<Object> parameters = request.getBody().getRequestBody().getParameters();
+
+            Message response = new Message();
 
             switch (operation) {
                 case "bind":
@@ -41,31 +45,56 @@ public class NamingInvoker {
                     ClientProxy clientProxy = (ClientProxy) parameters.get(1);
 
                     this.naming.bind(serviceName, clientProxy);
-                    result = (Object) serviceName;
+                    name = serviceName;
+
+                    if (name != "") {
+                        status = 200;
+                        response = response.NewResponseMessage(
+                                request.getBody().getRequestHeader().getRequestID(),
+                                status,
+                                (Object) name
+                        );
+                    }
+
                     break;
 
                 case "lookup":
                     serviceName = parameters.get(0).toString();
+                    result = (ClientProxy) this.naming.lookup(serviceName);
 
-                    clientProxy = this.naming.lookup(serviceName);
-                    result = (Object) clientProxy;
+                    if (result != null) {
+                        status = 200;
+                        response = response.NewResponseMessage(
+                                request.getBody().getRequestHeader().getRequestID(),
+                                status,
+                                (Object) result
+                        );
+                    }
+
                     break;
 
                 case "list":
-                    ArrayList<String> list = this.naming.list();
-                    result = (Object) list;
+                    dict = this.naming.list();
+
+                    if (dict != null) {
+                        status = 200;
+                        response = response.NewResponseMessage(
+                                request.getBody().getRequestHeader().getRequestID(),
+                                status,
+                                (Object) dict
+                        );
+                    }
+
                     break;
             }
 
-            if (result == null) {
-                status = 500;
+            if (status == 500) {
+                response = response.NewResponseMessage(
+                        request.getBody().getRequestHeader().getRequestID(),
+                        status,
+                        null
+                );
             }
-
-            Message response = new Message().NewResponseMessage(
-                    request.getBody().getRequestHeader().getRequestID(),
-                    status,
-                    result
-            );
 
             responseMessage = marshaller.marshall(response);
             server.send(responseMessage);

@@ -1,6 +1,7 @@
 package com.company.application;
 
 import com.company.distribution.CalculatorClientProxy;
+import com.company.distribution.ClientProxy;
 import com.company.distribution.naming.NamingProxy;
 
 import java.io.IOException;
@@ -12,14 +13,14 @@ public class CalculatorClient {
     public static void main(String[] args) throws UnknownHostException, IOException, Throwable {
 
         NamingProxy namingService = new NamingProxy("localhost", 1313);
-        CalculatorClientProxy client = (CalculatorClientProxy) namingService.lookup("Calculator");
+        ClientProxy client = (ClientProxy) namingService.lookup("Calculator");
 
-        ArrayList<String> ret = namingService.list();
+        CalculatorClientProxy calculator = (CalculatorClientProxy) client;
 
-        float a = client.Add(3, 5);
-        float s = client.Sub(3, 5);
-        float m = client.Mul(3, 5);
-        float d = client.Div(3, 5);
+        float a = calculator.Add(3, 5);
+        float s = calculator.Sub(3, 5);
+        float m = calculator.Mul(3, 5);
+        float d = calculator.Div(3, 5);
 
         System.out.println(a + ", " + s + ", " + m + ", " + d);
 

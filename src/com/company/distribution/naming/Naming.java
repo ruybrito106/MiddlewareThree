@@ -8,18 +8,10 @@ import java.util.ArrayList;
 
 public class Naming implements NamingInterface {
 
-    private NamingRespository respository = new NamingRespository();
+    private NamingRespository respository;
 
-    public Naming(NamingRespository respository) {
-        this.respository = respository;
-    }
-
-    public NamingRespository getRespository() {
-        return respository;
-    }
-
-    public void setRespository(NamingRespository respository) {
-        this.respository = respository;
+    public Naming() {
+        this.respository = new NamingRespository();
     }
 
     public void bind(String serviceName, ClientProxy client) throws UnknownHostException, IOException, Throwable {

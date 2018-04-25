@@ -37,7 +37,6 @@ public class ClientRequestHandler {
     public byte [] receive() throws IOException {
         byte[] msg = null;
 
-        inFromServer = new DataInputStream(clientSocket.getInputStream());
         receivedMessageSize = inFromServer.readInt();
         msg = new byte[receivedMessageSize];
         inFromServer.read(msg, 0, receivedMessageSize);
