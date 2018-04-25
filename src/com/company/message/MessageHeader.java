@@ -1,6 +1,8 @@
 package com.company.message;
 
-public class MessageHeader {
+import java.io.Serializable;
+
+public class MessageHeader implements Serializable {
 
     private int version;
     private boolean byteOrder;

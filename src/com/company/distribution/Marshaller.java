@@ -8,20 +8,28 @@ public class Marshaller {
 
     public byte [] marshall(Message toMarshall) throws IOException, InterruptedException {
 
-        ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-        ObjectOutputStream objectStream = new ObjectOutputStream(byteStream);
-        objectStream.writeObject(toMarshall);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ObjectOutputStream oos = new ObjectOutputStream(baos);
+        oos.writeObject(toMarshall);
 
-        return byteStream.toByteArray();
+        byte[] objectBytes = baos.toByteArray();
+        oos.close();
+        baos.close();
+
+        return objectBytes;
 
     }
 
     public Message unmarshall(byte [] toUnmarshall) throws IOException, InterruptedException, ClassNotFoundException {
 
-        ByteArrayInputStream byteStream = new ByteArrayInputStream(toUnmarshall);
-        ObjectInputStream objectStream = new ObjectInputStream(byteStream);
+        ByteArrayInputStream bais = new ByteArrayInputStream(toUnmarshall);
+        ObjectInputStream ois = new ObjectInputStream(bais);
 
-        return (Message) objectStream.readObject();
+        Message msg = (Message) ois.readObject();
+        ois.close();
+        bais.close();
+
+        return msg;
 
     }
 

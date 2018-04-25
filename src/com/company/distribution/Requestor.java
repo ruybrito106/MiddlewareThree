@@ -12,7 +12,7 @@ import java.util.Random;
 
 public class Requestor {
 
-    public static Termination invoke(Invocation invocation) throws UnknownHostException {
+    public static Termination invoke(Invocation invocation) throws IOException, ClassNotFoundException {
 
         ClientRequestHandler handler = new ClientRequestHandler(
                 invocation.getHost(),
@@ -32,19 +32,18 @@ public class Requestor {
 
         Message responseMessage = new Message();
 
+        byte [] marshalledRequest = null;
+        byte [] marshalledResponse = null;
+
         try {
 
-            byte [] marshalledRequest = marshaller.marshall(requestMessage);
+            marshalledRequest = marshaller.marshall(requestMessage);
             handler.send(marshalledRequest);
 
-            byte [] marshalledResponse = handler.receive();
+            marshalledResponse = handler.receive();
             responseMessage = marshaller.unmarshall(marshalledResponse);
 
-        } catch (IOException e) {
-            e.printStackTrace();
         } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
 

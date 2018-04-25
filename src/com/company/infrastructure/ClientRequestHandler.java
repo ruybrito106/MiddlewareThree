@@ -21,16 +21,32 @@ public class ClientRequestHandler {
         this.host = host;
         this.port = port;
 
-        // Init socket
     }
 
-    public void send(byte [] msg) throws IOException, InterruptedException {
-        return;
+    public void send(byte [] msg) throws IOException {
+        clientSocket = new Socket(this.host, this.port);
+        outToServer = new DataOutputStream(clientSocket.getOutputStream());
+        inFromServer = new DataInputStream(clientSocket.getInputStream());
+
+        sentMessageSize = msg.length;
+        outToServer.writeInt(sentMessageSize);
+        outToServer.write(msg, 0, sentMessageSize);
+        outToServer.flush();
     }
 
-    public byte [] receive() throws IOException, InterruptedException {
-        byte [] ret = new byte [100];
-        return ret;
+    public byte [] receive() throws IOException {
+        byte[] msg = null;
+
+        inFromServer = new DataInputStream(clientSocket.getInputStream());
+        receivedMessageSize = inFromServer.readInt();
+        msg = new byte[receivedMessageSize];
+        inFromServer.read(msg, 0, receivedMessageSize);
+
+        clientSocket.close();
+        outToServer.close();
+        inFromServer.close();
+
+        return msg;
     }
 
 }
