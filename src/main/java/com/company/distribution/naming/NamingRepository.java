@@ -4,11 +4,11 @@ import com.company.distribution.ClientProxy;
 
 import java.util.ArrayList;
 
-public class NamingRespository {
+public class NamingRepository {
 
     private ArrayList<NamingRecord> namingRecord = new ArrayList<NamingRecord>();
 
-    public NamingRespository() {
+    public NamingRepository() {
         this.namingRecord = new ArrayList<NamingRecord>();
     }
 

@@ -8,22 +8,22 @@ import java.util.ArrayList;
 
 public class Naming implements NamingInterface {
 
-    private NamingRespository respository;
+    private NamingRepository repository;
 
     public Naming() {
-        this.respository = new NamingRespository();
+        this.repository = new NamingRepository();
     }
 
     public void bind(String serviceName, ClientProxy client) throws UnknownHostException, IOException, Throwable {
-        this.respository.addService(serviceName, client);
+        this.repository.addService(serviceName, client);
     }
 
     public ClientProxy lookup(String serviceName) throws UnknownHostException, IOException, Throwable {
-        return this.respository.getService(serviceName);
+        return this.repository.getService(serviceName);
     }
 
     public ArrayList<String> list() throws UnknownHostException, IOException, Throwable {
-        return this.respository.getServices();
+        return this.repository.getServices();
     }
 
 }
