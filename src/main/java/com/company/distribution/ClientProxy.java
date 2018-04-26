@@ -16,6 +16,12 @@ public class ClientProxy implements Serializable {
         this.port = port;
     }
 
+    public ClientProxy(String host, int port, int objectid) {
+        this.host = host;
+        this.port = port;
+        this.objectID = objectid;
+    }
+
     public void setHost(String host) {
         this.host = host;
     }
