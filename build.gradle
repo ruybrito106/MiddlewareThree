@@ -15,9 +15,9 @@ plugins {
 }
 
 // Define the main class for the application
-mainClassName = 'com.company.distribution.naming.NamingServer'
+// mainClassName = 'com.company.distribution.naming.NamingServer'
 // mainClassName = 'com.company.application.CalculatorServer'
-// mainClassName = 'com.company.application.CalculatorClient'
+mainClassName = 'com.company.application.CalculatorClient'
 
 
 dependencies {

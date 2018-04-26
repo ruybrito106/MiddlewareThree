@@ -17,7 +17,11 @@ public class ServerRequestHandler {
     private DataOutputStream outToClient = null;
     private DataInputStream inFromClient = null;
 
-    public ServerRequestHandler(String host, int port) {
+    public ServerRequestHandler() {
+        this.portNumber = 0; //random
+    }
+
+    public ServerRequestHandler(int port) {
         this.portNumber = port;
     }
 

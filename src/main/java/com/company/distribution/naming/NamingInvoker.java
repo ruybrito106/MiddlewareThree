@@ -14,7 +14,6 @@ public class NamingInvoker {
     public void invoke(NamingProxy client) throws Throwable {
 
         ServerRequestHandler server = new ServerRequestHandler(
-                client.getHost(),
                 client.getPort()
         );
 

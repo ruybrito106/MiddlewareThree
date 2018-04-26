@@ -4,16 +4,20 @@ import com.company.infrastructure.ServerRequestHandler;
 import com.company.message.Message;
 
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 
-public class CalculatorInvoker {
+public class Invoker {
+    private Object core;
 
-    public void invoke(CalculatorClientProxy client) throws IOException, Throwable {
+    public Invoker (Object obj) {
+        core = obj;
+    }
 
-        ServerRequestHandler server = new ServerRequestHandler(
-                client.getHost(),
-                client.getPort()
-        );
+
+    public void invoke(ClientProxy client) throws IOException, Throwable {
+
+        ServerRequestHandler server = new ServerRequestHandler(client.getPort());
 
         Marshaller marshaller = new Marshaller();
 
@@ -31,26 +35,24 @@ public class CalculatorInvoker {
             String operation = request.getBody().getRequestHeader().getOperation();
             ArrayList<Object> parameters = request.getBody().getRequestBody().getParameters();
 
-            Calculator calculator = new Calculator(
-                    (Float) parameters.get(0),
-                    (Float) parameters.get(1)
-            );
-
-            switch (operation) {
-                case "add":
-                    result = (Object) calculator.Add();
-                    break;
-                case "sub":
-                    result = (Object) calculator.Sub();
-                    break;
-                case "mul":
-                    result = (Object) calculator.Mul();
-                    break;
-                case "div":
-                    result = (Object) calculator.Div();
-                    break;
-            }
-
+            Object[] params = parameters.toArray();
+            
+            try {
+                Class<?> types[] = new Class[params.length];
+                for (int i = 0; i < params.length; i++) {
+                    if (params[i] instanceof Integer) {
+                        types[i] = Integer.TYPE;
+                    } else if (params[i] instanceof String) {
+                        types[i] = String.class;
+                    } else if (params[i] instanceof Float) {
+                        types[i] = float.class;
+                    }
+                }
+                Method method = core.getClass().getDeclaredMethod(operation, types);
+                
+                result = method.invoke(core, params);
+            } catch (Exception e) { e.printStackTrace(); }
+            
             if (result == null) {
                 status = 500;
             }

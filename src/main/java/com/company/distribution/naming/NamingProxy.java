@@ -36,7 +36,9 @@ public class NamingProxy extends ClientProxy implements NamingInterface {
     @Override
     public ArrayList<String> list() throws UnknownHostException, IOException, Throwable {
         
-        return (ArrayList<String>) operate(null, getMethodName(new Object(){}));
+        @SuppressWarnings("unchecked")
+        ArrayList<String> operate = (ArrayList<String>) operate(null, getMethodName(new Object(){}));
+		return operate;
     }
 
 }
