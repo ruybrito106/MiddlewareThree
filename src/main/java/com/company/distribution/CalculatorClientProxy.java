@@ -6,8 +6,15 @@ import java.util.ArrayList;
 
 public class CalculatorClientProxy extends ClientProxy implements CalculatorInterface {
 
-    public CalculatorClientProxy(String host, int port) {
+    private int objectid;
+
+    public CalculatorClientProxy(String host, int port, int objectid) {
         super(host, port);
+        this.objectid = objectid;
+    }
+
+    public int getObjectId() {
+        return this.objectid;
     }
 
     public float add(float a, float b) throws IOException, ClassNotFoundException {
@@ -32,7 +39,7 @@ public class CalculatorClientProxy extends ClientProxy implements CalculatorInte
         params.add(a);
         params.add(b);
 
-        return (Float) operate(params, methodName);
+        return (Float) super.operate(params, methodName);
 
     }
 

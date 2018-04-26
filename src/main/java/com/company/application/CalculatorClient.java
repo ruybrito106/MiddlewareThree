@@ -1,6 +1,7 @@
 package com.company.application;
 
 import com.company.distribution.CalculatorClientProxy;
+import com.company.distribution.CalculatorInterface;
 import com.company.distribution.ClientProxy;
 import com.company.distribution.naming.NamingProxy;
 
@@ -15,7 +16,7 @@ public class CalculatorClient {
         NamingProxy namingService = new NamingProxy("localhost", 1313);
         ClientProxy client = (ClientProxy) namingService.lookup("Calculator");
 
-        CalculatorClientProxy calculator = (CalculatorClientProxy) client;
+        CalculatorInterface calculator = (CalculatorInterface) client;
 
         float a = calculator.add(3, 5);
         float s = calculator.sub(3, 5);

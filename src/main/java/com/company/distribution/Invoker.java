@@ -19,6 +19,8 @@ public class Invoker {
 
         ServerRequestHandler server = new ServerRequestHandler(client.getPort());
 
+        int id = client.getobjectID();
+
         Marshaller marshaller = new Marshaller();
 
         byte [] requestMessage;
@@ -36,23 +38,25 @@ public class Invoker {
             ArrayList<Object> parameters = request.getBody().getRequestBody().getParameters();
 
             Object[] params = parameters.toArray();
-            
-            try {
-                Class<?> types[] = new Class[params.length];
-                for (int i = 0; i < params.length; i++) {
-                    if (params[i] instanceof Integer) {
-                        types[i] = Integer.TYPE;
-                    } else if (params[i] instanceof String) {
-                        types[i] = String.class;
-                    } else if (params[i] instanceof Float) {
-                        types[i] = float.class;
+            if (id == 2) {
+                try {
+                    Class<?> types[] = new Class[params.length];
+                    for (int i = 0; i < params.length; i++) {
+                        if (params[i] instanceof Integer) {
+                            types[i] = Integer.TYPE;
+                        } else if (params[i] instanceof String) {
+                            types[i] = String.class;
+                        } else if (params[i] instanceof Float) {
+                            types[i] = float.class;
+                        }
                     }
-                }
-                Method method = core.getClass().getDeclaredMethod(operation, types);
+                    Method method = core.getClass().getDeclaredMethod(operation, types);
+                    
+                    result = method.invoke(core, params);
+                } catch (Exception e) { e.printStackTrace(); }
                 
-                result = method.invoke(core, params);
-            } catch (Exception e) { e.printStackTrace(); }
-            
+            }
+
             if (result == null) {
                 status = 500;
             }

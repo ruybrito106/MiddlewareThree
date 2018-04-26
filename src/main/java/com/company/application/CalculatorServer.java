@@ -9,8 +9,10 @@ public class CalculatorServer {
 
     public static void main(String[] args) {
 
-        Invoker invoker = new Invoker(new Calculator());
-        CalculatorClientProxy client = new CalculatorClientProxy("localhost", 3000);
+        Calculator calc = new Calculator();
+        Invoker invoker = new Invoker(calc);
+        int id = 2;
+        CalculatorClientProxy client = new CalculatorClientProxy("localhost", 3000, id);
         
         NamingProxy namingService = new NamingProxy("localhost", 1313);
         

@@ -2,9 +2,6 @@ package com.company.distribution;
 
 public class Calculator {
 
-    // private float fstOperand;
-    // private float sndOperand;
-
     public Calculator() {
     }
 
